@@ -1,28 +1,26 @@
 require 'socket'
-require_relative 'parser'
 
-class Request
+class HTTP
+
+attr_accessor :port  
 
 def initialize(port)
  @port = port
  @server = TCPServer.new(port)
 end
 
-refresh_count = 0
+# refresh_count = 0
 
 def start 
  until server.closed? do 
    client = server.accept
    parse(client)
-   refresh_count += 1
+   # refresh_count += 1
  end 
 end
 
 def parse(client)
-request_lines = {}
-break if
-
-
+request_lines = {} git
 while line = client.gets and !line.chomp.empty?
  request_lines << line.chomp
 end

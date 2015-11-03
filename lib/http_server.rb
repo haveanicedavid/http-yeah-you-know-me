@@ -12,13 +12,22 @@ request_lines = []
 while line = client.gets and !line.chomp.empty?
   request_lines << line.chomp
 end
-
 counter +=1
 
-
+  def parse
+    diagnostics = {}
+    diagnostics[:Verb] = request_lines[0].split[0]
+    diagnostics[:Path] = request_lines[0].split[1]
+    diagnostics[:Protocol] = request_lines[0].split[2]
+    diagnostics[:Host] = request_lines[1].split[1][1..-6]
+    diagnostics[:Port] = request_lines[1].split[1][-4..-1]
+    diagnostics[:Accept] = request_lines[3].split[1..-1]
+    binding.pry
+  end 
 
 puts "Got this request:"
 puts request_lines.inspect
+
 
 puts "Sending response."
 response = "<pre> Hello World! (#{counter}) </pre>"
@@ -67,15 +76,6 @@ end
 # # # end
 # # puts "Got this request:"
 # # puts request_lines.inspect
-
-# def parse(client)
-#   request_lines = Hash.new
-#   first_line = client.gets.split
-#   first_line["Verb:"] = first_line[0]
-
-# end
-
-
 
 # # def response
 

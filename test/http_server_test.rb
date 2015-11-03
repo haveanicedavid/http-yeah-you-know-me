@@ -1,52 +1,54 @@
-require_relative '../lib/http_yeah_you_know_me'
-require 'rest-client' # you may need to `gem install rest-client`
+require 'pry'
+require 'minitest/autorun'
+require 'minitest/pride'
+require_relative 'parser'
 
-RSpec.describe 'Acceptance test' do
-  def run_server(port, app, &block)
-    server = HttpYeahYouKnowMe.new(port, app)
-    thread = Thread.new { server.start }
-    thread.abort_on_exception = true
-    block.call
-  ensure
-    thread.kill
-    server.stop
-  end
+class ParserTest < Minitest::Test
 
+ # def test_intialize_takes_argument
+ #   data = Parser.new(request_lines)
+ #   #how to test
+ #   #infinite loop? waiting for client response
+ #   #having problems with line 8 
+ # end
 
-  it 'accepts and responds to a web request' do
-    path_info = "this value should be overridden by the app!"
+ def test_takes_argument
+   parser = Parser.new(request_lines)
+ end
 
-    app = lambda do |env_hash|
-      path_info = env_hash['PATH_INFO']
-      body      = "hello, class ^_^"
-      [200, {'Content-Type' => 'text/plain', 'Content-Length' => body.length, 'omg' => 'bbq'}, [body]]
-    end
+ def test_get_verb
+   parser = Parser.new(request_lines)
+   assert_equal "GET", parser.get_verb
+ end
 
-    run_server 9292, app do
-      response = RestClient.get 'localhost:9292/users'
-      expect(response.code).to eq 200
-      expect(response.headers[:omg]).to eq 'bbq'
-      expect(response.body).to eq "hello, class ^_^"
-      expect(path_info).to eq '/users'
-    end
-  end
+ def test_get_path
+   parser = Parser.new(request_lines)
+   assert_equal "/", parser.get_path #getting favicon.ico
+ end
 
+ def test_get_protocol
+   parser = Parser.new(request_lines)
+   assert_equal "HTTP/1.1", parser.get_protocol
+ end
 
-  it 'handles multiple requests' do
-    app = lambda { |env_hash| [200, {'Content-Type' => 'text/plain'}, []] }
+ def test_get_host
+   parser = Parser.new(request_lines)
+   assert_equal "127.0.0.1", parser.get_verb
+ end
 
-    run_server 9292, app do
-      expect(RestClient.get('localhost:9292/').code).to eq 200
-      expect(RestClient.get('localhost:9292/').code).to eq 200
-    end
-  end
+ def test_get_port
+   parser = Parser.new(request_lines)
+   assert_equal "9292", parser.get_port
+ end
 
+ def test_get_origin
+   parser = Parser.new(request_lines)
+   assert_equal "HTTP/1.1", parser.get_protocol
+ end
 
-  it 'starts on the specified port' do
-    app = lambda { |env_hash| [200, {'Content-Type' => 'text/plain', 'Content-Length' => 5}, ['hello']] }
+ def test_get_accept
+   parser = Parser.new(request_lines)
+   assert_equal "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,​*/*​;q=0.8, parser.get_protocol", parser.get_accept
+ end
 
-    run_server 9292, app do
-      expect(RestClient.get('localhost:9292/').body).to eq 'hello'
-    end
-  end
 end

@@ -14,7 +14,7 @@ while line = client.gets and !line.chomp.empty?
 end
 counter +=1
 
-  def parse
+  def parse(request_lines)
     diagnostics = {}
     diagnostics[:Verb] = request_lines[0].split[0]
     diagnostics[:Path] = request_lines[0].split[1]
@@ -22,7 +22,10 @@ counter +=1
     diagnostics[:Host] = request_lines[1].split[1][1..-6]
     diagnostics[:Port] = request_lines[1].split[1][-4..-1]
     diagnostics[:Accept] = request_lines[3].split[1..-1]
-    binding.pry
+    value = diagnostics.map do |key, value|
+      "#{key}: #{value}\n"
+    end
+    value.join
   end 
 
 puts "Got this request:"
@@ -30,7 +33,7 @@ puts request_lines.inspect
 
 
 puts "Sending response."
-response = "<pre> Hello World! (#{counter}) </pre>"
+response = "<pre>Hello World! (#{counter})\n#{parse(request_lines)} </pre>"
 output = "<html><head></head><body>#{response}</body></html>"
 headers = ["http/1.1 200 ok",
           "date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",

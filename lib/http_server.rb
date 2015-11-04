@@ -1,4 +1,5 @@
 require 'socket'
+require_relative 'parser'
 require 'pry'
 
 tcp_server = TCPServer.new(9292)
@@ -14,33 +15,32 @@ while line = client.gets and !line.chomp.empty?
 end
 counter +=1
 
-  def parse(request_lines)
-    diagnostics = {}
-    diagnostics[:Verb] = request_lines[0].split[0]
-    diagnostics[:Path] = request_lines[0].split[1]
-    diagnostics[:Protocol] = request_lines[0].split[2]
-    diagnostics[:Host] = request_lines[1].split[1][1..-6]
-    diagnostics[:Port] = request_lines[1].split[1][-4..-1]
-    diagnostics[:Accept] = request_lines[3].split[1..-1]
-    debug = diagnostics.map do |key, value|
-      "#{key}: #{value}\n"
-    end
-    debug.join
-  end 
+  # def parse(request_lines)
+  #   diagnostics = {}
+  #   diagnostics[:Verb] = request_lines[0].split[0]
+  #   diagnostics[:Path] = request_lines[0].split[1]
+  #   diagnostics[:Protocol] = request_lines[0].split[2]
+  #   diagnostics[:Host] = request_lines[1].split[1][1..-6]
+  #   diagnostics[:Port] = request_lines[1].split[1][-4..-1]
+  #   diagnostics[:Accept] = request_lines[3].split[1..-1]
+  #   debug = diagnostics.map do |key, value|
+  #     "#{key}: #{value}\n"
+  #   end
+  #   debug.join
+  # end
 
-    def select_path
-      #if path == '/'
-      if diagnostics[:Path] == '/'
-        #respond with parse(request_lines)
-        response = "<pre> #{parse(request_lines)} </pre>"
-        #respond with parse(request_lines)
-      end 
-    end 
+  #   def select_path
+  #     #if path == '/'
+  #     if @hash[:Path] == '/'
+  #       #respond with parse(request_lines)
+  #       response = "<pre> #{parse(request_lines)} </pre>"
+  #       #respond with parse(request_lines)
   #     elsif diagnostics[:Path] == '/hello'
-  # #   #respond with 'Hello World! AND Counter'
-  #       response = "Hello World! #{counter}"
+  # # # #   #respond with 'Hello World! AND Counter'
+  #       response = "<pre> Hello World! #{counter} </pre>" 
   # #   #if root == '/datetime'
   #     elsif diagnostics[:Path] == '/datetime'
+  #       binding.pry
   # #   #respond with 11:07AM on Sunday, October November 1, 2015
   #       response = Time.new.strftime('%l:%M%p on %A, %B %-d %Y')
   # #   #if root == '/shutdown'
@@ -55,14 +55,16 @@ counter +=1
   #   end 
   # end 
 
-
 puts "Got this request:"
 puts request_lines.inspect
 
+parse = Parse.new(request_lines)
+formatted_parse = parse.formatted_parse
+
 
 puts "Sending response."
-response = "<pre>Hello World! (#{counter})\n#{parse(request_lines)} </pre>"
-output = "<html><head></head><body>#{response}</body></html>"
+# response = "<pre>Hello World! (#{counter}) \n#{formatted_parse} </pre>"
+output = "<html><head></head><body> #{response}</body></html>"
 headers = ["http/1.1 200 ok",
           "date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",
           "server: ruby",

@@ -29,7 +29,10 @@ class Parser
   end
 
   def word_search
-    
+    binding.pry
+    data = parse_debug[:path]
+    data.split("&")
+    data[0]
   end 
 
 end 

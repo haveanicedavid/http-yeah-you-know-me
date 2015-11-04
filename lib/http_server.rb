@@ -34,8 +34,11 @@ loop do
       when debug_info[:Path] == "/datetime"
         path_response = datetime 
       when debug_info[:Path] == "/shutdown"
-        path_response = "Total Requests (#{total_requests})" 
+        path_response = "Total Requests (#{total_requests})"
+      when debug_in 
       end
+      # case debug_info[:Path]
+      # when "/" then path_response = parser.formatted_debug
 
   puts "Sending response."
   output = "<html><head></head><body>#{path_response}</body></html>"

@@ -2,13 +2,14 @@ require 'pry'
 
 class Parser
   
-  attr_reader :request_lines
+  attr_reader :request_lines, :datetime
   
   def initialize(request_lines)
     @request_lines = request_lines
+    @datetime = Time.new.strftime('%l:%M%p on %A, %B %-d %Y')
   end
   
-  def parse
+  def parse_debug
     diagnostics = {}
     diagnostics[:Verb] = request_lines[0].split[0]
     diagnostics[:Path] = request_lines[0].split[1]
@@ -19,11 +20,16 @@ class Parser
     return diagnostics
   end 
 
-  def formatted_parse
-    parser = parse
+  def formatted_debug
+    parser = parse_debug
     debug = parser.map do |key, value|
       "#{key}: #{value}\n"
     end
     debug.join
   end
+
+  def word_search
+    
+  end 
+
 end 

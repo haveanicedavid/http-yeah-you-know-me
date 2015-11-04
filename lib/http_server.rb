@@ -1,6 +1,6 @@
 require 'socket'
 require_relative 'parser'
-require_relative 'path'
+# require_relative 'word_search'
 require 'pry'
 
 tcp_server = TCPServer.new(9292)
@@ -16,37 +16,26 @@ end
 
 counter +=1
 parser = Parser.new(request_lines)
-hash = parser.parse
-datetime = Time.new.strftime('%l:%M%p on %A, %B %-d %Y')
+debug_info = parser.parse_debug
+datetime = parser.datetime
+# word_search = parser.word_search
+# datetime = Time.new.strftime('%l:%M%p on %A, %B %-d %Y')
+# searcher = WordSeach.new
+# word_search = searcher.search
 
 puts "Got this request:"
 puts request_lines.inspect
 
-#user inputs http address into url 
-#server recovers and stores code
-#make sure it enters as string
-#split at the question mark
-#take the 1st element of that split(the second half)
-#split the second half at the & symbol
-#take each element 
-#iterate through all the elements and split at the = symbol
-#take the first element or word fragment value
-#reference that word fragment value to the dictionary
-#if the word fragment value is in the dictionary
-  #output "#{word fragment value} is a known word
-#if the word fragment value is not in the dictionary
-  #output "#{word fragment value} is NOT a known word"
-
     case 
-    when hash[:Verb] == "GET" && hash[:Path] == "/"
-
-    when hash[:Path] == "/"
-      path_response = parser.formatted_parse
-    when hash[:Path] == "/hello"
+    # when debug_info[:Verb] == "GET" && debug_info[:Path] == "/word_search"
+      # path_response = searcher.search
+    when debug_info[:Path] == "/"
+      path_response = parser.formatted_debug
+    when debug_info[:Path] == "/hello"
       path_response = "Hello World! (#{counter})"  
-    when hash[:Path] == "/datetime"
+    when debug_info[:Path] == "/datetime"
       path_response = datetime 
-    when hash[:Path] == "/shutdown"
+    when debug_info[:Path] == "/shutdown"
       path_response = "Total Requests (#{counter})"
       client.close
     end

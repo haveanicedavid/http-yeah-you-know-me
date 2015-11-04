@@ -25,24 +25,22 @@ puts request_lines.inspect
 # path = Path.new
 # response = path.path_response
 
-@parser = Parser.new(request_lines)
-@hash = @parser.parse
-@datetime = Time.new.strftime('%l:%M%p on %A, %B %-d %Y')
+parser = Parser.new(request_lines)
+hash = parser.parse
+datetime = Time.new.strftime('%l:%M%p on %A, %B %-d %Y')
 
-def path_response
-    path_response = []
     case 
-    when @hash[:Path] == "/"
-      path_response = @parser.formatted_parse #from Parse class
-    when @hash[:Path] == "/hello"
-      path_response = "Hello World! (#{counter})"  #counter from http_server class
-    when @hash[:Path] == "/datetime"
-      path_response = @datetime   #instantiated above
-    when @hash[:Path] == "/shutdown"
-      path_response = "Total Request 12"
+    when hash[:Path] == "/"
+      path_response = parser.formatted_parse
+    when hash[:Path] == "/hello"
+      path_response = "Hello World! (#{counter})"  
+    when hash[:Path] == "/datetime"
+      path_response = datetime 
+    when hash[:Path] == "/shutdown"
+      path_response = "Total Requests (#{counter})"
+      client.close
     end
-    return path_response
-  end 
+  
 
 
 puts "Sending response."

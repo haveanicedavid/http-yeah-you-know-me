@@ -14,27 +14,47 @@ request_lines = []
 while line = client.gets and !line.chomp.empty?
   request_lines << line.chomp
 end
+
 counter +=1
 
 puts "Got this request:"
 puts request_lines.inspect
 
-parser = Parser.new(request_lines)   
-hash = parser.parse
-path = Path.new(hash)
-response = path.path_response
+# parser = Parser.new(request_lines)   
+# hash = parser.parse
+# path = Path.new
+# response = path.path_response
+
+@parser = Parser.new(request_lines)
+@hash = @parser.parse
+@datetime = Time.new.strftime('%l:%M%p on %A, %B %-d %Y')
+
+def path_response
+    path_response = []
+    case 
+    when @hash[:Path] == "/"
+      path_response = @parser.formatted_parse #from Parse class
+    when @hash[:Path] == "/hello"
+      path_response = "Hello World! (#{counter})"  #counter from http_server class
+    when @hash[:Path] == "/datetime"
+      path_response = @datetime   #instantiated above
+    when @hash[:Path] == "/shutdown"
+      path_response = "Total Request 12"
+    end
+    return path_response
+  end 
 
 
 puts "Sending response."
 # response = "<pre>Hello World! (#{counter}) \n#{formatted_parse} </pre>"
 # response = "<pre>#{selected_path} </pre>"
-output = "<html><head></head><body> #{response}</body></html>"
-# headers = ["http/1.1 200 ok",
-#           "date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",
-#           "server: ruby",
-#           "content-type: text/html; charset=iso-8859-1",
-#           "content-length: #{output.length}\r\n\r\n"].join("\r\n")
-# client.puts headers
+output = "<html><head></head><body> #{path_response}</body></html>"
+headers = ["http/1.1 200 ok",
+          "date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",
+          "server: ruby",
+          "content-type: text/html; charset=iso-8859-1",
+          "content-length: #{output.length}\r\n\r\n"].join("\r\n")
+client.puts headers
 client.puts output
 
 puts ["Wrote this response:", headers, output].join("\n")

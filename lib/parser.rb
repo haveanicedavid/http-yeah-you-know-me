@@ -31,7 +31,6 @@ class Parser
   end
 
   def word_search_split
-    binding.pry
     data = parse_debug[:path]
     post_path = data.split("?")[1]  #"word=cat&word=dog"
     word_then_value = post_path.split("&") #["word=cat", "word=dog"]
@@ -51,4 +50,4 @@ class Parser
   end 
   end 
 
-end 
+end  

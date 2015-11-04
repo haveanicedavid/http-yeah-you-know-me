@@ -34,11 +34,8 @@ loop do
       when debug_info[:Path] == "/datetime"
         path_response = datetime 
       when debug_info[:Path] == "/shutdown"
-        path_response = "Total Requests (#{total_requests})"
-      when debug_in 
+        path_response = "Total Requests (#{total_requests})" 
       end
-      # case debug_info[:Path]
-      # when "/" then path_response = parser.formatted_debug
 
   puts "Sending response."
   output = "<html><head></head><body>#{path_response}</body></html>"
@@ -48,28 +45,4 @@ loop do
   end 
   client.close
 
-puts "Got this request:"
-puts request_lines.inspect
-
-#if the path == '/'
-#respond with request lines from parse
-#if the path == '/hello'
-#respond with "Hello World! and the #{counter}"
-#if the path == '/datetime'
-#respond with 
-
-puts "Sending response."
-response = "<pre>Hello World! (#{counter})\n#{parse(request_lines)} </pre>"
-output = "<html><head></head><body>#{response}</body></html>"
-headers = ["http/1.1 200 ok",
-          "date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",
-          "server: ruby",
-          "content-type: text/html; charset=iso-8859-1",
-          "content-length: #{output.length}\r\n\r\n"].join("\r\n")
-client.puts headers
-client.puts output
-
-puts ["Wrote this response:", headers, output].join("\n")
-client.close
-puts "\nResponse complete, exiting."
 end

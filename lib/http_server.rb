@@ -19,19 +19,23 @@ counter +=1
 puts "Got this request:"
 puts request_lines.inspect
 
-parse = Parse.new(request_lines)
-formatted_parse = parse.formatted_parse
+parse = Parse.new(request_lines)   
+# formatted_parse = parse.formatted_parse #exported to path
+hash = parse.parse
+path = Path.new(hash)
+response = path.path_response
 
 
 puts "Sending response."
-response = "<pre>Hello World! (#{counter}) \n#{formatted_parse} </pre>"
+# response = "<pre>Hello World! (#{counter}) \n#{formatted_parse} </pre>"
+# response = "<pre>#{selected_path} </pre>"
 output = "<html><head></head><body> #{response}</body></html>"
-headers = ["http/1.1 200 ok",
-          "date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",
-          "server: ruby",
-          "content-type: text/html; charset=iso-8859-1",
-          "content-length: #{output.length}\r\n\r\n"].join("\r\n")
-client.puts headers
+# headers = ["http/1.1 200 ok",
+#           "date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",
+#           "server: ruby",
+#           "content-type: text/html; charset=iso-8859-1",
+#           "content-length: #{output.length}\r\n\r\n"].join("\r\n")
+# client.puts headers
 client.puts output
 
 puts ["Wrote this response:", headers, output].join("\n")

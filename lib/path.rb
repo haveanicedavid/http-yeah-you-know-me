@@ -1,43 +1,30 @@
 require 'pry'
 
+require_relative 'parser'
+require_relative 'http_server'
+
 class Path
 
-  def select_path
+  attr_reader :datetime
 
+  def initialize(hash)
+    @hash = hash
+    parse = Parse.new(request_lines)
+    @datetime = Time.new.strftime('%l:%M%p on %A, %B %-d %Y')
+  end
 
-
+  def path_response
+    case 
+    when hash[:Path] == '/'
+      path_response = parse.formatted_parse
+    when hash[:Path] == '/hello'
+      path_response = "Hello World! (#{counter})"
+    when hash[:Path] == '/datetime'
+      path_response = @datetime
+    when hash[:Path] == '/shutdown'
+      path_response = "Total Request 12"
+    end
   end 
 end 
 
 
-
-
-
-
-
-
-
-  #   if @hash[:Path] == '/'
-      if path == '/'
-    # respond with parse(request_lines)
-        response = "<pre> #{parse(request_lines)} </pre>"
-  #       #respond with parse(request_lines)
-  #     elsif diagnostics[:Path] == '/hello'
-  # # # #   #respond with 'Hello World! AND Counter'
-  #       response = "<pre> Hello World! #{counter} </pre>" 
-  # #   #if root == '/datetime'
-  #     elsif diagnostics[:Path] == '/datetime'
-  #       binding.pry
-  # #   #respond with 11:07AM on Sunday, October November 1, 2015
-  #       response = Time.new.strftime('%l:%M%p on %A, %B %-d %Y')
-  # #   #if root == '/shutdown'
-  #     elsif diagnostics[:Path] == '/shutdown'
-  # #   #respond with "Total Requests: 12"
-  #       response = "Total Requests: 12"
-  # #     #12 equals aggregate of requests
-  #       client.close
-  # #       #server shuts down and exits 
-  #     end 
-  #     return response
-  #   end 
-  # end 

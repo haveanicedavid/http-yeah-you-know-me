@@ -22,11 +22,39 @@ counter +=1
     diagnostics[:Host] = request_lines[1].split[1][1..-6]
     diagnostics[:Port] = request_lines[1].split[1][-4..-1]
     diagnostics[:Accept] = request_lines[3].split[1..-1]
-    value = diagnostics.map do |key, value|
+    debug = diagnostics.map do |key, value|
       "#{key}: #{value}\n"
     end
-    value.join
+    debug.join
   end 
+
+    def select_path
+      #if path == '/'
+      if diagnostics[:Path] == '/'
+        #respond with parse(request_lines)
+        response = "<pre> #{parse(request_lines)} </pre>"
+        #respond with parse(request_lines)
+      end 
+    end 
+  #     elsif diagnostics[:Path] == '/hello'
+  # #   #respond with 'Hello World! AND Counter'
+  #       response = "Hello World! #{counter}"
+  # #   #if root == '/datetime'
+  #     elsif diagnostics[:Path] == '/datetime'
+  # #   #respond with 11:07AM on Sunday, October November 1, 2015
+  #       response = Time.new.strftime('%l:%M%p on %A, %B %-d %Y')
+  # #   #if root == '/shutdown'
+  #     elsif diagnostics[:Path] == '/shutdown'
+  # #   #respond with "Total Requests: 12"
+  #       response = "Total Requests: 12"
+  # #     #12 equals aggregate of requests
+  #       client.close
+  # #       #server shuts down and exits 
+  #     end 
+  #     return response
+  #   end 
+  # end 
+
 
 puts "Got this request:"
 puts request_lines.inspect

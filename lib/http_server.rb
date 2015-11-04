@@ -19,9 +19,8 @@ counter +=1
 puts "Got this request:"
 puts request_lines.inspect
 
-parse = Parse.new(request_lines)   
-# formatted_parse = parse.formatted_parse #exported to path
-hash = parse.parse
+parser = Parser.new(request_lines)   
+hash = parser.parse
 path = Path.new(hash)
 response = path.path_response
 

@@ -1,6 +1,6 @@
 require 'pry'
 
-class Parse
+class Parser
   
   attr_reader :request_lines
   

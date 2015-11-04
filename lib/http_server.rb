@@ -31,6 +31,12 @@ counter +=1
 puts "Got this request:"
 puts request_lines.inspect
 
+#if the path == '/'
+#respond with request lines from parse
+#if the path == '/hello'
+#respond with "Hello World! and the #{counter}"
+#if the path == '/datetime'
+#respond with 
 
 puts "Sending response."
 response = "<pre>Hello World! (#{counter})\n#{parse(request_lines)} </pre>"

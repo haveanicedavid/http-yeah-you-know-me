@@ -2,11 +2,10 @@ require 'pry'
 
 class Parser
   
-  attr_reader :request_lines, :datetime, :dictionary
+  attr_reader :request_lines, :datetime
   
   def initialize(request_lines)
     @request_lines = request_lines
-    @dictionary = File.read("/usr/share/dict/words")
     @datetime = Time.new.strftime('%l:%M%p on %A, %B %-d %Y')
   end
   
@@ -28,7 +27,7 @@ class Parser
     end
     debug.join
   end
-
+ 
   def word_search_split
     data = parse_debug[:Path]
     post_path = data.split("?")[1]  #"word=cat&word=dog"
@@ -38,15 +37,15 @@ class Parser
     end 
   end 
 
-    def word_search_response
-     response = word_search_split.map! do |value|
+  def word_search_response
+    response = word_search_split.map! do |value|
       if dictionary.include?(value)
         "#{value} is a known word"
       else 
         "#{value} is not a known word"
       end 
-      end
-      response
-    end 
+    end
+    response
+  end 
+end 
 
-end  

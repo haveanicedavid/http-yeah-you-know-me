@@ -1,5 +1,6 @@
 require 'socket'
 require_relative 'parser'
+require_relative 'path_sorter'
 require 'pry'
 
 server = TCPServer.new(9292)
@@ -17,19 +18,23 @@ loop do
   unless request_lines[0] == "GET /favicon.ico HTTP/1.1"
   total_requests +=1
 
-  parser = Parser.new(request_lines)
-  debug_info = parser.parse_debug
+  puts "Got this request:"
+  puts request_lines.inspect
+  #path_sorter = PathSorter.new(request_lines).sorted_response
 
-      if debug_info[:Path] == "/"
+  parser = Parser.new(request_lines)
+  request_info = parser.parsed_request
+
+      if request_info[:Path] == "/"
         path_response = parser.formatted_debug
-      elsif debug_info[:Path] == "/hello"
+      elsif request_info[:Path] == "/hello"
         hello_count += 1
         path_response = "Hello World! (#{hello_count})"  
-      elsif debug_info[:Path] == "/datetime"
+      elsif request_info[:Path] == "/datetime"
         path_response = parser.datetime 
-      elsif debug_info[:Path] == "/shutdown"
+      elsif request_info[:Path] == "/shutdown"
         path_response = "Total Requests (#{total_requests})" 
-      elsif debug_info[:Path].include?("/word")
+      elsif request_info[:Path].include?("/word")
         path_response = parser.word_search_response
       end
 

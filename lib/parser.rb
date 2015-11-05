@@ -10,7 +10,7 @@ class Parser
     @datetime = Time.new.strftime('%l:%M%p on %A, %B %-d %Y')
   end
   
-  def parse_debug
+  def parsed_request
     diagnostics = {}
     diagnostics[:Verb] = request_lines[0].split[0]
     diagnostics[:Path] = request_lines[0].split[1]
@@ -22,15 +22,15 @@ class Parser
   end 
 
   def formatted_debug
-    parser = parse_debug
+    parser = parsed_request
     debug = parser.map do |key, value|
-      "#{key}: #{value}\n"
+      "#{key}: #{value} \n"
     end
     debug.join
   end
  
   def word_search_split
-    data = parse_debug[:Path]
+    data = parsed_request[:Path]
     post_path = data.split("?")[1]  #"word=cat&word=dog"
     word_then_value = post_path.split("&") #["word=cat", "word=dog"]
     word_then_value.map! do |combo| #[word, cat], [word, dog]

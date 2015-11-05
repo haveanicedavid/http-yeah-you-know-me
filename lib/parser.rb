@@ -23,7 +23,7 @@ class Parser
 
   def formatted_request
     format = parsed_request.map do |key, value|
-      "#{key}: #{value} "
+      "#{key}: #{value} \n "
     end
     format.join
   end

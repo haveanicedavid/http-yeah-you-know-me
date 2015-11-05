@@ -11,14 +11,14 @@ class Parser
   end
 
   def parsed_request
-    diagnostic = {}
-    diagnostic[:Verb] = request_lines[0].split[0]
-    diagnostic[:Path] = request_lines[0].split[1]
-    diagnostic[:Protocol] = request_lines[0].split[2]
-    diagnostic[:Host] = request_lines[1].split[1][0..-6]
-    diagnostic[:Port] = request_lines[1].split[1][-4..-1]
-    diagnostic[:Accept] = request_lines[4].split[1..-1]
-    return diagnostic
+     diagnostic = {
+    :Verb => request_lines[0].split[0],
+    :Path => request_lines[0].split[1],
+    :Protocol => request_lines[0].split[2],
+    :Host => request_lines[1].split[1][0..-6],
+    :Port => request_lines[1].split[1][-4..-1],
+    :Accept => request_lines[4].split[1..-1]
+    }
   end 
 
   def formatted_request

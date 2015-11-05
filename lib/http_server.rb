@@ -37,7 +37,7 @@ loop do
       if output.include?("Total Requests")
         break 
       end
-  end 
+  end
   client.close
 end
   # require_relative 'path_sorter'

@@ -9,31 +9,29 @@ class Parser
     @dictionary = File.read("/usr/share/dict/words")
     @datetime = Time.new.strftime('%l:%M%p on %A, %B %-d %Y')
   end
-  
+
   def parsed_request
-    diagnostics = {}
-    diagnostics[:Verb] = request_lines[0].split[0]
-    diagnostics[:Path] = request_lines[0].split[1]
-    diagnostics[:Protocol] = request_lines[0].split[2]
-    diagnostics[:Host] = request_lines[1].split[1][1..-6]
-    diagnostics[:Port] = request_lines[1].split[1][-4..-1]
-    diagnostics[:Accept] = request_lines[3].split[1..-1]
-    return diagnostics
+    diagnostic = {}
+    diagnostic[:Verb] = request_lines[0].split[0]
+    diagnostic[:Path] = request_lines[0].split[1]
+    diagnostic[:Protocol] = request_lines[0].split[2]
+    diagnostic[:Host] = request_lines[1].split[1][0..-6]
+    diagnostic[:Port] = request_lines[1].split[1][-4..-1]
+    diagnostic[:Accept] = request_lines[4].split[1..-1]
+    return diagnostic
   end 
 
-  def formatted_debug
-    parser = parsed_request
-    debug = parser.map do |key, value|
-      "#{key}: #{value} \n"
+  def formatted_request
+    format = parsed_request.map do |key, value|
+      "#{key}: #{value} "
     end
-    debug.join
+    format.join
   end
  
-  def word_search_split
-    data = parsed_request[:Path]
-    post_path = data.split("?")[1]  #"word=cat&word=dog"
-    word_then_value = post_path.split("&") #["word=cat", "word=dog"]
-    word_then_value.map! do |combo| #[word, cat], [word, dog]
+  def word_search_split 
+    parameters = parsed_request[:Path].split("?")[1] 
+    parameter_value = parameters.split("&") 
+    parameter_value.map! do |combo| 
       combo.split("=")[1]
     end 
   end 
@@ -46,7 +44,6 @@ class Parser
         "#{value} is not a known word"
       end 
     end
-    response.to_s
   end 
 end 
 

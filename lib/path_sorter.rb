@@ -23,5 +23,3 @@
 #   end
 # end
 
-
-#path_sorter

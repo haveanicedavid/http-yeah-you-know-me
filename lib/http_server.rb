@@ -18,8 +18,6 @@ loop do
 
   parser = Parser.new(request_lines)
   debug_info = parser.parse_debug
-  datetime = parser.datetime
-  word_search = parser.word_search_response
 
   puts "Ready for a request"
   puts "Got this request:"
@@ -29,9 +27,9 @@ loop do
       when debug_info[:Path] = "/" then path_response = parser.formatted_debug
       when debug_info[:Path] = "/hello" then hello_count += 1 
         path_response = "Hello World! (#{hello_count})"  
-      when debug_info[:Path] = "/datetime" then path_response = datetime 
+      when debug_info[:Path] = "/datetime" then path_response = parser.datetime 
       when debug_info[:Path] = "/shutdown" then path_response = "Total Requests (#{total_requests})"
-      when debug_info[:Path].start_with?("/word_seach?") then path_response = word_search
+      when debug_info[:Path].start_with?("/word_search?") then path_response = parser.word_search_response
       end
 
 

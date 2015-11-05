@@ -33,6 +33,8 @@ loop do
         path_response = parser.datetime 
       when debug_info[:Path] == "/shutdown"
         path_response = "Total Requests (#{total_requests})" 
+      # when debug_info[:Path].start_with?("/word_search?")
+      #   path_response = parser.word_search_response
       end
 
   puts "Sending response."

@@ -6,6 +6,7 @@ class Parser
   
   def initialize(request_lines)
     @request_lines = request_lines
+    @dictionary = File.read("/usr/share/dict/words")
     @datetime = Time.new.strftime('%l:%M%p on %A, %B %-d %Y')
   end
   
@@ -46,6 +47,7 @@ class Parser
       end 
     end
     response
+    binding.pry
   end 
 end 
 

@@ -1,3 +1,5 @@
+# require 'pry'
+
 # class PathSorter
 
 #   attr_reader :request_info, :parser
@@ -9,7 +11,7 @@
 
 #   def sorted_response
 #     if @request_info[:Path] == "/"
-#         path_response = parser.formatted_debug
+#         path_response = parser.formatted_request
 #       elsif @request_info[:Path] == "/hello"
 #          hello_count += 1
 #         path_response = "Hello World! (#{hello_count})"  

@@ -15,8 +15,8 @@ loop do
 
   unless request_lines[0] == "GET /favicon.ico HTTP/1.1"
     total_requests +=1
-  puts "Got this request:"
-  puts request_lines.inspect
+  # puts "Got this request:"
+  # puts request_lines.inspect
 
     parser = Parser.new(request_lines)
     request_info = parser.parsed_request

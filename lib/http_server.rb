@@ -15,8 +15,6 @@ loop do
 
   unless request_lines[0] == "GET /favicon.ico HTTP/1.1"
     total_requests +=1
-  # puts "Got this request:"
-  # puts request_lines.inspect
 
     parser = Parser.new(request_lines)
     request_info = parser.parsed_request
@@ -42,9 +40,3 @@ loop do
   end
   client.close
 end
-  # require_relative 'path_sorter'
-
-  # puts "Ready for a request"
-  
-
-  #path_sorter = PathSorter.new(request_lines).sorted_response

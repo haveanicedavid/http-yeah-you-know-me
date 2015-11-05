@@ -40,14 +40,13 @@ class Parser
 
   def word_search_response
     response = word_search_split.map! do |value|
-      if dictionary.include?(value)
+      if @dictionary.include?(value)
         "#{value} is a known word"
       else 
         "#{value} is not a known word"
       end 
     end
-    response
-    binding.pry
+    response.to_s
   end 
 end 
 

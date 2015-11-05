@@ -20,24 +20,19 @@ loop do
   parser = Parser.new(request_lines)
   debug_info = parser.parse_debug
 
-  puts "Got this request:"
-  puts request_lines.inspect
-
-      case 
-      when debug_info[:Path] == "/"
+      if debug_info[:Path] == "/"
         path_response = parser.formatted_debug
-      when debug_info[:Path] == "/hello"
+      elsif debug_info[:Path] == "/hello"
         hello_count += 1
         path_response = "Hello World! (#{hello_count})"  
-      when debug_info[:Path] == "/datetime"
+      elsif debug_info[:Path] == "/datetime"
         path_response = parser.datetime 
-      when debug_info[:Path] == "/shutdown"
+      elsif debug_info[:Path] == "/shutdown"
         path_response = "Total Requests (#{total_requests})" 
-      # when debug_info[:Path].start_with?("/word_search?")
-      #   path_response = parser.word_search_response
+      elsif debug_info[:Path].include?("/word")
+        path_response = parser.word_search_response
       end
 
-  puts "Sending response."
   output = "<html><head></head><body>#{path_response}</body></html>"
   client.puts output
     if output.include?("Total Requests")
